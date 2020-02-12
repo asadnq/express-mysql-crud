@@ -2,13 +2,14 @@
 <html>
   <%- include('../layout/header'); -%>
   <body>
+    <%- include('../layout/navbar'); -%>
     <div class="container d-flex justify-content-center">
       <%if (posts.length > 0) {%>
       <ul class="post-wrapper">
         <!-- render list of posts -->
         <% posts.forEach((post) => { %>
         <li class="post-item-list">
-          <a href="<%= `http://localhost:3000/posts/${post.id}` %> ">
+          <a href="<%= `/posts/${post.id}` %> ">
             <div class="post-item card">
               <h5 class="text">
                 <%= post.title %>
@@ -28,15 +29,7 @@
       <% } %>
     </div>
     <div class="d-flex justify-content-center">
-      <button onclick="redirect()" class="btn btn-primary">
-        create
-      </button>
+      <a class='btn btn-outline-warning' href='/posts/create'>Create Post</a>
     </div>
   </body>
-  <script>
-    function redirect() {
-      console.log('clicked');
-      window.location = 'http://localhost:3000/posts/create';
-    }
-  </script>
 </html>
