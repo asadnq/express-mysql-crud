@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../layout/header'); -%>
+  <body>
+    <div class="container d-flex justify-content-center"></div>
+    <h3>
+      <%= post.title; %>
+    </h3>
+    <p>
+      <%= post.content; %>
+    </p>
+    <div class="d-flex justify-content-center">
+      <button onclick="redirect()" class="btn btn-primary">
+        close
+      </button>
+    </div>
+  </body>
+  <script>
+    function redirect() {
+      console.log('clicked');
+      window.location = 'http://localhost:3000/posts';
+    }
+  </script>
+</html>

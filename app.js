@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
@@ -18,11 +19,28 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'theenkeng about meems',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge:600000
+  }
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
+
+const auth = function(req, res, next) {
+  if (req.session.username === 'asad') {
+    return next();
+  }
+
+  return res.redirect('/');
+}
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/posts', postsRouter);
+app.use('/posts', auth, postsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

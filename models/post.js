@@ -1,7 +1,19 @@
 const db = require('../database/db');
 
-const create = (body, callback) => {
-  //const { title, content } = body;
+const store = (body, callback) => {
+  db.query({
+    sql: 'INSERT INTO posts SET ?',
+    timeout: 4000,
+    values: { ...body },
+  }, (err, result) => {
+    return callback(err, result);
+  });
+};
+
+module.exports = {
+  store,
+};
+/*const store = (body, callback) => {
   db.query({
     sql: 'INSERT INTO posts SET ?',
     timeout: 4000,
@@ -16,10 +28,24 @@ const create = (body, callback) => {
       values: [result.insertId],
     }, function(err, result) {
       callback(err, result);
-    })
+    });
   });
-};
+};*/
+
+const findAll = (callback) => {
+  db.query('SELECT * FROM POSTS', (err, result) => {
+    callback(err, result);
+  });
+}
+
+const findOne = (id, callback) => {
+  db.query('SELECT * FROM POSTS where id = ?', [id], (err, result) => {
+    callback(err, result[0]);
+  });
+}
 
 module.exports = {
-  create,
+  store,
+  findAll,
+  findOne,
 };

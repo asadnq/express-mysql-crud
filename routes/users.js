@@ -12,8 +12,10 @@ router.post('/login', function(req, res) {
   const { body } = req;
 
   User.auth(body, function(err, result, fields) {
-    console.log('body', body);
-    res.send({ err, result, fields });
+    req.session.username = result.username;
+    req.session.password = result.password;
+    // return res.send({ err, result, fields });
+    req.session.save(() => res.redirect('/posts'));
   });
 });
 
