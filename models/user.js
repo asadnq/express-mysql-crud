@@ -12,6 +12,15 @@ const auth = (body, callback) => {
   );
 };
 
+const create = (body, callback) => {
+  const { username, password } = body;
+
+  db.query('INSERT INTO users SET ?', { username, password }, (err, res) => {
+    return callback(err, res);
+  });
+};
+
 module.exports = {
   auth,
+  create,
 };

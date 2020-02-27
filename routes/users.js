@@ -21,7 +21,13 @@ router.post('/login', function(req, res) {
 
 router.post('/logout', function(req, res) {
   req.session.destroy();
-  res.redirect('/')
-})
+  res.redirect('/');
+});
+
+router.post('/register', function(req, res) {
+  const { body } = req;
+
+  User.create(body, () => res.redirect('/'));
+});
 
 module.exports = router;
