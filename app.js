@@ -19,24 +19,40 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-  secret: 'theenkeng about meems',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    maxAge:600000
-  }
-}));
+app.use(
+  session({
+    secret: 'theenkeng about meems',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 600000,
+    },
+  }),
+);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const auth = function(req, res, next) {
-  if (req.session.username === 'asad') {
-    return next();
-  }
+const User = require('./models/user');
 
-  return res.redirect('/');
-}
+const auth = function(req, res, next) {
+  console.log('req auth', req.session.username);
+  const { username, password } = req.session;
+  //console.log('res auth', req)
+  User.auth({ username, password }, (err, res) => {
+    console.log('auth res', res);
+
+    if (password === res.password) {
+      return next();
+      j;
+    }
+
+    return res.redirect('/');
+  });
+
+  /*if (req.session.username === ) {
+    return next();
+  }*/
+};
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

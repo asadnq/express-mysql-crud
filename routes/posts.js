@@ -9,7 +9,7 @@ router.post('/store', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-  console.log('req.ression', req.session);
+  //console.log('req.ression', req.session);
   Post.findAll(function(err, result) {
     const posts = result;
     res.render('post/view', { posts });
@@ -19,7 +19,7 @@ router.get('/', function(req, res) {
 router.get('/create', function(req, res) {
   Post.findAll(function(err, result) {
     const posts = result;
-    console.log('posts findAll', posts);
+    // console.log('posts findAll', posts);
     res.render('post/create', { posts });
   })
 });
@@ -34,9 +34,9 @@ router.get('/:id', function(req, res) {
   //res.render('post/create');
   const { params } = req;
   Post.findOne(params.id, function(err, result) {
-    console.log('params id', params.id)
+    //console.log('params id', params.id)
     const post = result;
-    console.log('post one', post);
+    //console.log('post one', post);
     res.render('post/detail', { post });
   })
 });

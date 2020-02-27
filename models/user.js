@@ -7,6 +7,7 @@ const auth = (body, callback) => {
     'SELECT * FROM users where username = ? and password = ?',
     [username, password],
     function(error, results) {
+      console.log('results,', results);
       callback(error, results[0]);
     },
   );
