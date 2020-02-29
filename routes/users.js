@@ -34,6 +34,10 @@ router.post('/logout', function(req, res) {
 router.post('/register', function(req, res) {
   const { body } = req;
 
+  const hash = crypto.createHmac('sha256', secret)
+                   .update(body.password)
+                   .digest('hex');
+
   User.create({...body, password: hash}, (err, result) => {
     if (err) throw err;
     res.redirect('/')
