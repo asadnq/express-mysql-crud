@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const crypto = require('crypto');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -7,11 +8,17 @@ router.get('/', function(req, res, next) {
 });
 
 const User = require('../models/user');
+const secret = 'abcdefg';
 
 router.post('/login', function(req, res) {
   const { body } = req;
 
-  User.auth(body, function(err, result, fields) {
+  const hash = crypto.createHmac('sha256', secret)
+                   .update(body.password)
+                   .digest('hex');
+
+  User.auth({...body, password: hash}, function(err, result, fields) {
+    if (err) throw err;
     req.session.username = result.username;
     req.session.password = result.password;
     // return res.send({ err, result, fields });
@@ -27,7 +34,10 @@ router.post('/logout', function(req, res) {
 router.post('/register', function(req, res) {
   const { body } = req;
 
-  User.create(body, () => res.redirect('/'));
+  User.create({...body, password: hash}, (err, result) => {
+    if (err) throw err;
+    res.redirect('/')
+  });
 });
 
 module.exports = router;
